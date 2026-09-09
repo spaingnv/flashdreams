@@ -42,16 +42,7 @@ Start here, then use the narrower docs for the task in front of you:
 
 ## Repo Map
 
-- `flashdreams/flashdreams/core/`: reusable numerical primitives, checkpoint loading, distributed helpers, attention, and I/O. Keep it model-agnostic.
-- `flashdreams/flashdreams/infra/`: framework contracts and orchestration for configs, pipelines, encoders, decoders, diffusion models, schedulers, runners, profiling, and CUDA graph wrapping.
-- `flashdreams/flashdreams/recipes/`: built-in reusable recipe code such as WAN, Cosmos, TAEHV, and template wiring.
-- `flashdreams/flashdreams/configs/`, `plugins/`, and `scripts/`: runner registry, plugin discovery, and CLI entry points.
-- `integrations_v2/<model>/`: v2 architecture + checkpoint wiring (`config.py`, `impl/`), adapters (`apps/<demo>/adapter.py`), tests (`tests/`). Replaces the now-fully-removed v1 `integrations/`.
-- `apps/<name>/`: v2 interactive apps. Package at `apps/<name>/<name>/`; tests beside it at `apps/<name>/tests/`, not inside the package.
-- `flashdreams/test_v2/`: v2 engine tests. Merges into `flashdreams/tests/` once v1→v2 concludes.
-- `docs/source/`: Sphinx sources for quickstart, models, developer guides, API, and community docs.
-- `flashdreams/tests/`: v1 core/engine tests, not yet migrated.
-- `tests/` (repo root): test-runner scripts plus repo-meta checks, not package/integration tests. Ignore `.claude/worktrees/` when scanning the source tree; those are nested worktree artifacts, not the repo's current source.
+File structure is in [CONTRIBUTING.md's File Tree Of Flashdreams](CONTRIBUTING.md#file-tree-of-flashdreams). Ignore `.claude/worktrees/` when scanning the source tree; those are nested worktree artifacts, not the repo's current source.
 
 ## Skill Map
 

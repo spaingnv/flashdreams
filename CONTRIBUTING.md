@@ -18,13 +18,14 @@ issue and we'll fix it.
 3. [Developer Certificate of Origin (DCO)](#developer-certificate-of-origin-dco)
 4. [Submitting a pull request](#submitting-a-pull-request)
 5. [Code review and merge](#code-review-and-merge)
-6. [Coding conventions](#coding-conventions)
-7. [Testing](#testing)
-8. [Dependency version bounds](#dependency-version-bounds)
-9. [Working with a single integration package](#working-with-a-single-integration-package)
-10. [Licensing of contributions](#licensing-of-contributions)
-11. [Reporting issues](#reporting-issues)
-12. [Code of Conduct](#code-of-conduct)
+6. [File Tree Of Flashdreams](#file-tree-of-flashdreams)
+7. [Coding conventions](#coding-conventions)
+8. [Testing](#testing)
+9. [Dependency version bounds](#dependency-version-bounds)
+10. [Working with a single integration package](#working-with-a-single-integration-package)
+11. [Licensing of contributions](#licensing-of-contributions)
+12. [Reporting issues](#reporting-issues)
+13. [Code of Conduct](#code-of-conduct)
 
 ## Ways to contribute
 
@@ -223,6 +224,37 @@ We aim for an initial review on every PR within two business days. If
 your PR has been quiet longer than that, please feel free to leave a
 short ping comment.
 
+## File Tree Of Flashdreams
+
+```text
+apps/<slug>/                   # v2 interactive app (Drive, T2V, Cam2V, ...)
+  <slug>/                      # app package: session, UI, controls
+  tests/                       # app-level tests (stub net, no checkpoint)
+  pyproject.toml
+  README.md
+
+integrations_v2/<model>/       # v2 model architecture + demo bindings
+  config.py                    # model's pipeline config
+  impl/                        # all model-specific implementation
+  tests/                       # model-level tests (stub net + optional real checkpoint)
+  apps/<demo>/adapter.py        # create_app() -> IApplication, binds model to an app
+  pyproject.toml
+  README.md
+
+flashdreams/flashdreams/       # the framework package
+  core/                        # numerical primitives, checkpoint loading, attention, I/O
+  infra/                       # framework contracts: configs, pipelines, encoders/decoders, schedulers, runners
+  recipes/                     # built-in reusable recipe code (WAN, Cosmos, TAEHV, ...)
+  api_v2/                      # protocols an application implements
+  runtime_v2/                  # the two-thread loop that runs one
+  configs/, plugins/, scripts/ # runner registry, plugin discovery, CLI entry points
+
+flashdreams/test_v2/           # v2 engine tests (window, run_session, threads)
+flashdreams/tests/             # framework tests not yet migrated to test_v2/
+tests/                         # repo-wide test-runner scripts + meta checks, not package tests
+docs/source/                   # Sphinx sources
+```
+
 ## Coding conventions
 
 - Python 3.10+. Type-annotate new code; the project type-checks with
@@ -232,11 +264,9 @@ short ping comment.
   locally is the easiest way to avoid surprises.
 - Prefer small, well-named functions over long functions with comments
   explaining each block. Comments should explain *why*, not *what*.
-- Tests live next to the thing they validate: engine tests in
-  `flashdreams/test_v2/`, app tests in `apps/<name>/tests/`, architecture/adapter
-  tests in `integrations_v2/<model>/tests/`. v1 tests remain in
-  `flashdreams/tests/` until migrated. Use `pytest` and prefer existing
-  fixtures over hand-rolled setup. See
+- Tests live next to the thing they validate — see the File Tree Of
+  Flashdreams above. Use `pytest` and prefer existing fixtures over
+  hand-rolled setup. See
   [Testing](#testing) for marker requirements.
 - Every source file added by a contribution must include the SPDX
   header used elsewhere in the project:
