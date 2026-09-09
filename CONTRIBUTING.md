@@ -232,9 +232,11 @@ short ping comment.
   locally is the easiest way to avoid surprises.
 - Prefer small, well-named functions over long functions with comments
   explaining each block. Comments should explain *why*, not *what*.
-- Tests live in `flashdreams/tests/`, `integrations/*/tests/`, and
-  `integrations_v2/*/tests/`. Use
-  `pytest` and prefer existing fixtures over hand-rolled setup. See
+- Tests live next to the thing they validate: engine tests in
+  `flashdreams/test_v2/`, app tests in `apps/<name>/tests/`, architecture/adapter
+  tests in `integrations_v2/<model>/tests/`. v1 tests remain in
+  `flashdreams/tests/` until migrated. Use `pytest` and prefer existing
+  fixtures over hand-rolled setup. See
   [Testing](#testing) for marker requirements.
 - Every source file added by a contribution must include the SPDX
   header used elsewhere in the project:
@@ -321,7 +323,7 @@ the declared minimums. This means:
 
 ## Working with a single integration package
 
-The workspace contains many integration packages under `integrations/`.
+The workspace contains many integration packages under `integrations_v2/`.
 A full `uv sync` installs dependencies for *all* of them. If you only
 need one (e.g. you're working on `omnidreams`), use the distribution
 package name with `--package` to sync only that package's dependencies:

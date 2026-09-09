@@ -46,9 +46,12 @@ Start here, then use the narrower docs for the task in front of you:
 - `flashdreams/flashdreams/infra/`: framework contracts and orchestration for configs, pipelines, encoders, decoders, diffusion models, schedulers, runners, profiling, and CUDA graph wrapping.
 - `flashdreams/flashdreams/recipes/`: built-in reusable recipe code such as WAN, Cosmos, TAEHV, and template wiring.
 - `flashdreams/flashdreams/configs/`, `plugins/`, and `scripts/`: runner registry, plugin discovery, and CLI entry points.
-- `integrations/<name>/`: workspace-member model/plugin packages with their own configs, runners, tests, README files, and `pyproject.toml` entry points.
+- `integrations_v2/<model>/`: v2 architecture + checkpoint wiring (`config.py`, `impl/`), adapters (`apps/<demo>/adapter.py`), tests (`tests/`). Replaces the now-fully-removed v1 `integrations/`.
+- `apps/<name>/`: v2 interactive apps. Package at `apps/<name>/<name>/`; tests beside it at `apps/<name>/tests/`, not inside the package.
+- `flashdreams/test_v2/`: v2 engine tests. Merges into `flashdreams/tests/` once v1→v2 concludes.
 - `docs/source/`: Sphinx sources for quickstart, models, developer guides, API, and community docs.
-- `tests/`: root test helpers plus package/integration tests. Ignore `.claude/worktrees/` when scanning the source tree; those are nested worktree artifacts, not the repo's current source.
+- `flashdreams/tests/`: v1 core/engine tests, not yet migrated.
+- `tests/` (repo root): test-runner scripts plus repo-meta checks, not package/integration tests. Ignore `.claude/worktrees/` when scanning the source tree; those are nested worktree artifacts, not the repo's current source.
 
 ## Skill Map
 
@@ -91,9 +94,19 @@ Use `--no-instantiate` before GPU work to inspect the resolved runner config wit
 
 Every pytest test must carry exactly one of `ci_cpu`, `ci_gpu`, or `manual`; `CONTRIBUTING.md` has the exact rules. Use module-level `pytestmark = pytest.mark.ci_cpu` for pure Python/metadata tests. Keep GPU, `libGL`/`cv2`, large-checkpoint, credential, and download-heavy checks out of `ci_cpu`.
 
+**v2 test ownership** — put a new test next to the thing it validates, not in a mirror of old package names:
+
+| You are testing… | Test lives in… |
+| --- | --- |
+| Engine loop (window, threads, presentation) | `flashdreams/test_v2/` |
+| An app (flags, WASD, physics) | `apps/<name>/tests/` |
+| An architecture or its adapter | `integrations_v2/<model>/tests/` |
+
+App tests must not need a real checkpoint or neural renderer — a stub network is enough; apps must not import `integrations_v2/<model>/impl/` directly.
+
 ## Boundaries
 
-Keep dependency direction strict: `core` -> `infra` -> recipes/integrations. `core` and `infra` must not import from `integrations/`; expose a generic config slot or override hook instead of adding model-specific branches. Built-in reusable model pieces belong in `flashdreams/flashdreams/recipes/`; standalone plugin packages belong in `integrations/<name>/`.
+Keep dependency direction strict: `core` -> `infra` -> recipes/integrations. `core` and `infra` must not import from `integrations_v2/`; expose a generic config slot or override hook instead of adding model-specific branches. Built-in reusable model pieces belong in `flashdreams/flashdreams/recipes/`; standalone plugin packages belong in `integrations_v2/<name>/`.
 
 ## Known Pitfalls
 

@@ -1,13 +1,12 @@
 [tool.uv.workspace]
 members = [
     "flashdreams",
-    # Each populated subdir under ``integrations/`` or ``integrations_v2/``
-    # is a standalone external integration repo (e.g. ``causal_forcing`` /
-    # ``self_forcing``
+    # Each populated subdir under ``integrations_v2/`` is a standalone
+    # external integration repo (e.g. ``causal_forcing`` / ``self_forcing``
     # plugins, ``omnidreams`` / ``lingbot`` integrations); empty stub
     # folders alongside them are intentional placeholders for future
-    # extractions and don't ship a ``pyproject.toml`` yet.
-    "integrations/*",
+    # extractions and don't ship a ``pyproject.toml`` yet. The v1
+    # ``integrations/`` layout this replaced has been fully removed (#581).
     "integrations_v2/*",
     "apps/*",
     # Nested sub-packages that the integration globs do not reach.
@@ -16,7 +15,6 @@ members = [
 exclude = [
     "apps/__init__.py",
     "apps/README.md",
-    "integrations/omnidreams",
     "integrations_v2/README.md",
 ]
 
