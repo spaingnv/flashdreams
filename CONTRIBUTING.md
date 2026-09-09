@@ -227,17 +227,17 @@ short ping comment.
 ## File Tree Of Flashdreams
 
 ```text
-apps/<slug>/                   # v2 interactive app (Drive, T2V, Cam2V, ...)
-  <slug>/                      # app package: session, UI, controls
-  tests/                       # app-level tests (stub net, no checkpoint)
+apps/<app_slug>/                    # apps (Drive, T2V, Cam2V, ...)
+  <app_slug>/                       # app implementation
+  tests/                            # validate app implementation
   pyproject.toml
   README.md
 
-integrations_v2/<model>/       # v2 model architecture + demo bindings
-  config.py                    # model's pipeline config
-  impl/                        # all model-specific implementation
-  tests/                       # model-level tests (stub net + optional real checkpoint)
-  apps/<demo>/adapter.py        # create_app() -> IApplication, binds model to an app
+integrations_v2/<model>/            # model integrations + demo bindings
+  config.py                         # collection of pipeline definitions for a particular `<model>`
+  impl/                             # implementation details of a model
+  tests/                            # validate model implementation
+  apps/<demo>/adapter.py            # contains all entry point definitions (ex: `create_app`) for a particular `<demo>`
   pyproject.toml
   README.md
 
@@ -249,7 +249,7 @@ flashdreams/flashdreams/       # the framework package
   runtime_v2/                  # the two-thread loop that runs one
   configs/, plugins/, scripts/ # runner registry, plugin discovery, CLI entry points
 
-flashdreams/test_v2/           # v2 engine tests (window, run_session, threads)
+flashdreams/test_v2/           # Flashdreams Runtime/Protocol tests (window, run_session, threads)
 flashdreams/tests/             # framework tests not yet migrated to test_v2/
 tests/                         # repo-wide test-runner scripts + meta checks, not package tests
 docs/source/                   # Sphinx sources

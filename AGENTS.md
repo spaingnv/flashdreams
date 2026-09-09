@@ -85,19 +85,21 @@ Use `--no-instantiate` before GPU work to inspect the resolved runner config wit
 
 Every pytest test must carry exactly one of `ci_cpu`, `ci_gpu`, or `manual`; `CONTRIBUTING.md` has the exact rules. Use module-level `pytestmark = pytest.mark.ci_cpu` for pure Python/metadata tests. Keep GPU, `libGL`/`cv2`, large-checkpoint, credential, and download-heavy checks out of `ci_cpu`.
 
-**v2 test ownership** — put a new test next to the thing it validates, not in a mirror of old package names:
+**v2 test ownership** — put a new test next to the thing it validates:
 
 | You are testing… | Test lives in… |
 | --- | --- |
-| Engine loop (window, threads, presentation) | `flashdreams/test_v2/` |
+| Flashdreams Runtime/Protocol (window, threads, presentation) | `flashdreams/test_v2/` |
 | An app (flags, WASD, physics) | `apps/<name>/tests/` |
 | An architecture or its adapter | `integrations_v2/<model>/tests/` |
 
-App tests must not need a real checkpoint or neural renderer — a stub network is enough; apps must not import `integrations_v2/<model>/impl/` directly.
+## Dependencies
 
-## Boundaries
+- `core` -> `infra` -> `recipes`/`integrations_v2`. `core` and `infra` must not import from `integrations_v2/`; expose a generic config slot or override hook instead of adding model-specific branches. Built-in reusable model pieces belong in `flashdreams/flashdreams/recipes/`; standalone plugin packages belong in `integrations_v2/<name>/`.
+- `apps/<name>/` depends only on `flashdreams` (`core`, `infra`, `api_v2`) — never on `integrations_v2/`. A demo app must run against a stub network; wiring in a real model is the adapter's job, not the app's.
+- `integrations_v2/<model>/` depends on `flashdreams` and on the `apps/<demo>/` it adapts for (via `apps/<demo>/adapter.py`) — never the other way around.
 
-Keep dependency direction strict: `core` -> `infra` -> recipes/integrations. `core` and `infra` must not import from `integrations_v2/`; expose a generic config slot or override hook instead of adding model-specific branches. Built-in reusable model pieces belong in `flashdreams/flashdreams/recipes/`; standalone plugin packages belong in `integrations_v2/<name>/`.
+Because of this direction, tests in `apps/<name>/tests/` must not import from `integrations_v2/` (real checkpoints or model `impl/`) — that would break the dependency rule above. CI enforcement of this is a separate follow-up, not yet built.
 
 ## Known Pitfalls
 
