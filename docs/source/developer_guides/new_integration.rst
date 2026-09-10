@@ -25,6 +25,11 @@ However, if any of your new features require modifications to the core FlashDrea
 File structure
 --------------
 
+This page still describes a standalone package that registers a
+``flashdreams.runner_configs`` runner (``runner.py`` below). In-tree
+packages under ``integrations_v2/`` do not add ``runner.py``; they follow
+the layout in `integrations_v2/README.md <https://github.com/NVIDIA/flashdreams/blob/main/integrations_v2/README.md>`_.
+
 We recommend the following file structure for your new method:
 
 .. code-block:: text
@@ -104,7 +109,7 @@ The runner handles CLI-facing I/O and runtime loops.
    )
 
 
-You can use the existing integrations under the `integrations_v2/ <https://github.com/NVIDIA/flashdreams/tree/main/integrations_v2>`_ directory as a minimal guide. These folders are simple examples of what mini standalone repositories that depend on FlashDreams look like. Examples are often the best way to learn; take a look at the `OmniDreams <https://github.com/NVIDIA/flashdreams/tree/main/integrations_v2/omnidreams>`_ and `Self-Forcing <https://github.com/NVIDIA/flashdreams/tree/main/integrations_v2/self_forcing>`_ integrations for good references on how to extend and use FlashDreams in your own projects.
+The in-tree packages under `integrations_v2/ <https://github.com/NVIDIA/flashdreams/tree/main/integrations_v2>`_ are the current examples, but they follow the v2 layout (``config.py``, ``impl/``, ``apps/<demo>/adapter.py``), not the ``runner.py`` tree on this page. `OmniDreams <https://github.com/NVIDIA/flashdreams/tree/main/integrations_v2/omnidreams>`_ and `Self-Forcing <https://github.com/NVIDIA/flashdreams/tree/main/integrations_v2/self_forcing>`_ are the usual starting points. Rewriting this tutorial onto that layout is a follow-up.
 
 Registering your method
 -----------------------

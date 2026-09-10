@@ -270,7 +270,7 @@ docs/source/                    # Sphinx sources
 - Tests live next to the thing they validate — see the File Tree Of
   FlashDreams above. Use `pytest` and prefer existing fixtures over
   hand-rolled setup. See
-  [Testing](#testing) for marker requirements.
+  [Testing](#testing) for discovery and marker requirements.
 - Every source file added by a contribution must include the SPDX
   header used elsewhere in the project:
 
@@ -296,6 +296,26 @@ docs/source/                    # Sphinx sources
   retained.
 
 ## Testing
+
+Pytest collection is configured in the root `pyproject.toml`. There is
+no `testpaths` setting, so `pytest` from the repo root walks the tree:
+
+- Files named `test_*.py`. Pytest's default also collects `*_test.py`;
+  don't use that name here.
+- Classes named `Test*` (pytest default). Some modules use classes,
+  some only module-level functions.
+- Functions and methods named `test_*` (pytest default), including
+  `async def test_*`.
+
+Same test filename in different folders is fine (several
+`test_application.py` files exist). Root `pyproject.toml` already sets
+`--import-mode=importlib` so pytest keeps them separate. Do not remove
+that flag.
+
+A `test_*.py` next to the code it validates is collected with no CI
+change. The root `pyproject.toml` skips `parity_check`,
+`parity_check_v2`, `baseline_fastvideo`, and `baseline_lightx2v` via
+`norecursedirs`.
 
 Every test function must be marked with exactly one **CI tier marker**.
 A pytest plugin (`flashdreams._pytest_plugins.marker_enforcement`)
