@@ -226,21 +226,16 @@ short ping comment.
 
 ## File Tree Of FlashDreams
 
+Where a new app or model goes. Each documents its own layout:
+
 ```text
-apps/<app_slug>/                # apps (Drive, T2V, Cam2V, ...)
-  <app_slug>/                   # app implementation
-  tests/                        # validate app implementation
-  pyproject.toml
-  README.md
+apps/                           # reusable apps; layout in apps/README.md
+integrations_v2/                # model packages; layout in integrations_v2/README.md
+```
 
-integrations_v2/<model>/        # model integrations + demo bindings
-  config.py                     # collection of pipeline definitions for a particular `<model>`
-  impl/                         # implementation details of a model
-  tests/                        # validate model implementation
-  apps/<demo>/adapter.py        # contains all entry point definitions (ex: `create_app`) for a particular `<demo>`
-  pyproject.toml
-  README.md
+The framework package, and the test and doc trees:
 
+```text
 flashdreams/flashdreams/        # the framework package
   core/                         # numerical primitives, checkpoint loading, attention, I/O
   infra/                        # framework contracts: configs, pipelines, encoders/decoders, schedulers, runners
@@ -262,12 +257,6 @@ flashdreams/tests/              # framework tests not yet migrated to test_v2/
 tests/                          # repo-wide test-runner scripts + meta checks, not package tests
 docs/source/                    # Sphinx sources
 ```
-
-The `integrations_v2/<model>/` shape above is the layout for a model
-integration. The smaller demo and fixture packages (`color_fade`,
-`red_screen`, `null_model`, `imgui_ui_demo`, `slangpy_ui_demo`) carry a flat
-`<name>/` package instead; see
-[`integrations_v2/README.md`](https://github.com/NVIDIA/flashdreams/blob/main/integrations_v2/README.md) for what each one is.
 
 ## Coding conventions
 

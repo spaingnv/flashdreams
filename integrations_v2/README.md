@@ -18,6 +18,7 @@ follows is already done for you.
 - `red_screen` — the smallest interactive one, streaming to a browser.
 - `slangpy_ui_demo` — three applications that draw widgets over model output,
   and the reference for writing a UI loop.
+- `imgui_ui_demo` — an editable ImGui text field rendered over model output.
 - `lingbot` — the Lingbot World model and its `cam2v-lingbot` binding to the
   shared interactive camera-to-video application.
 - `waypoint` — the Waypoint model binding to the shared `apps/action2v`
