@@ -44,13 +44,13 @@ integrations_v2/<model>/
   pyproject.toml
   README.md
   __init__.py
-  config.py            # model's unique pipeline config or config wrapper
-  impl/                # all model-specific implementation
-  tests/               # model-specific tests, when needed
+  config.py            # collection of pipeline definitions for a particular `<model>`
+  impl/                # implementation details of a model
+  tests/               # validate model implementation
   apps/
     <demo>/
       __init__.py
-      adapter.py       # create_app() -> IApplication
+      adapter.py       # all entry point definitions for `<demo>` (ex: `create_app`)
       README.md        # launch instructions only
 ```
 
