@@ -121,6 +121,8 @@ extra-paths = [
 exclude = [
     "**/protos/*pb2*",
     "apps/interactive_drive/interactive_drive/**",
+    # Same files as above; tests live beside the package, not inside it.
+    "apps/interactive_drive/tests/**",
     # These map/archive parsers and numerical PhysX adapters intentionally
     # accept dynamically shaped YAML, Arrow, and NumPy values. Keep the new
     # V2 application, session, engine contracts, rollout, input, and renderer
