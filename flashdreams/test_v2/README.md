@@ -38,9 +38,8 @@ CPU-only tests for the v2 protocols themselves:
   is checked against the reader itself in
   `flashdreams/tests/test_benchmark_harness.py`.
 
-Application behaviour is tested by the application that owns it — see
-`integrations_v2/red_screen/red_screen/tests/` and
-`integrations_v2/color_fade/color_fade/tests/`.
+Reusable apps keep their tests beside the package, in `apps/<name>/tests/`
+(see `apps/t2v/tests/` above, and `apps/interactive_drive/tests/`).
 
 Run commands from the repository root.
 

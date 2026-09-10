@@ -42,7 +42,7 @@ Start here, then use the narrower docs for the task in front of you:
 
 ## Repo Map
 
-File structure is in [CONTRIBUTING.md's File Tree Of Flashdreams](CONTRIBUTING.md#file-tree-of-flashdreams). Ignore `.claude/worktrees/` when scanning the source tree; those are nested worktree artifacts, not the repo's current source.
+File structure is in [CONTRIBUTING.md's File Tree Of FlashDreams](CONTRIBUTING.md#file-tree-of-flashdreams). Ignore gitignored AI-tool directories (see `.gitignore`) when scanning the source tree; they hold tool state, not the repo's current source.
 
 ## Skill Map
 
@@ -89,17 +89,18 @@ Every pytest test must carry exactly one of `ci_cpu`, `ci_gpu`, or `manual`; `CO
 
 | You are testing… | Test lives in… |
 | --- | --- |
-| Flashdreams Runtime/Protocol (window, threads, presentation) | `flashdreams/test_v2/` |
+| FlashDreams Runtime/Protocol (window, threads, presentation) | `flashdreams/test_v2/` |
 | An app (flags, WASD, physics) | `apps/<name>/tests/` |
-| An architecture or its adapter | `integrations_v2/<model>/tests/` |
+| A model or its adapter | `integrations_v2/<model>/tests/` |
 
 ## Dependencies
 
-- `core` -> `infra` -> `recipes`/`integrations_v2`. `core` and `infra` must not import from `integrations_v2/`; expose a generic config slot or override hook instead of adding model-specific branches. Built-in reusable model pieces belong in `flashdreams/flashdreams/recipes/`; standalone plugin packages belong in `integrations_v2/<name>/`.
-- `apps/<name>/` depends only on `flashdreams` (`core`, `infra`, `api_v2`) — never on `integrations_v2/`. A demo app must run against a stub network; wiring in a real model is the adapter's job, not the app's.
-- `integrations_v2/<model>/` depends on `flashdreams` and on the `apps/<demo>/` it adapts for (via `apps/<demo>/adapter.py`) — never the other way around.
+- `infra` depends on `core` — never the other way around. `core` stays model-agnostic.
+- `recipes`/`integrations_v2` depend on `infra` and `core` — never the other way around. Expose a generic config slot or override hook in `core`/`infra` instead of adding model-specific branches. Built-in reusable model pieces belong in `flashdreams/flashdreams/recipes/`; standalone plugin packages belong in `integrations_v2/<name>/`.
+- `apps/<name>/` depends on `flashdreams` — never the other way around. An app is written against the framework, not against any one model: it must run against a stub network, and binding a real model is the adapter's job.
+- `integrations_v2/<model>/` depends on `flashdreams` and on the app it adapts for (via its own `integrations_v2/<model>/apps/<demo>/adapter.py`) — never the other way around.
 
-Because of this direction, tests in `apps/<name>/tests/` must not import from `integrations_v2/` (real checkpoints or model `impl/`) — that would break the dependency rule above. CI enforcement of this is a separate follow-up, not yet built.
+Because of this direction, tests in `apps/<name>/tests/` must not import from `integrations_v2/` — an app's tests run against a stub, and model-specific checks belong in `integrations_v2/<model>/tests/`. CI enforcement of this is a separate follow-up, not yet built.
 
 ## Known Pitfalls
 

@@ -18,7 +18,7 @@ issue and we'll fix it.
 3. [Developer Certificate of Origin (DCO)](#developer-certificate-of-origin-dco)
 4. [Submitting a pull request](#submitting-a-pull-request)
 5. [Code review and merge](#code-review-and-merge)
-6. [File Tree Of Flashdreams](#file-tree-of-flashdreams)
+6. [File Tree Of FlashDreams](#file-tree-of-flashdreams)
 7. [Coding conventions](#coding-conventions)
 8. [Testing](#testing)
 9. [Dependency version bounds](#dependency-version-bounds)
@@ -224,36 +224,50 @@ We aim for an initial review on every PR within two business days. If
 your PR has been quiet longer than that, please feel free to leave a
 short ping comment.
 
-## File Tree Of Flashdreams
+## File Tree Of FlashDreams
 
 ```text
-apps/<app_slug>/                    # apps (Drive, T2V, Cam2V, ...)
-  <app_slug>/                       # app implementation
-  tests/                            # validate app implementation
+apps/<app_slug>/                # apps (Drive, T2V, Cam2V, ...)
+  <app_slug>/                   # app implementation
+  tests/                        # validate app implementation
   pyproject.toml
   README.md
 
-integrations_v2/<model>/            # model integrations + demo bindings
-  config.py                         # collection of pipeline definitions for a particular `<model>`
-  impl/                             # implementation details of a model
-  tests/                            # validate model implementation
-  apps/<demo>/adapter.py            # contains all entry point definitions (ex: `create_app`) for a particular `<demo>`
+integrations_v2/<model>/        # model integrations + demo bindings
+  config.py                     # collection of pipeline definitions for a particular `<model>`
+  impl/                         # implementation details of a model
+  tests/                        # validate model implementation
+  apps/<demo>/adapter.py        # contains all entry point definitions (ex: `create_app`) for a particular `<demo>`
   pyproject.toml
   README.md
 
-flashdreams/flashdreams/       # the framework package
-  core/                        # numerical primitives, checkpoint loading, attention, I/O
-  infra/                       # framework contracts: configs, pipelines, encoders/decoders, schedulers, runners
-  recipes/                     # built-in reusable recipe code (WAN, Cosmos, TAEHV, ...)
-  api_v2/                      # protocols an application implements
-  runtime_v2/                  # the two-thread loop that runs one
-  configs/, plugins/, scripts/ # runner registry, plugin discovery, CLI entry points
+flashdreams/flashdreams/        # the framework package
+  core/                         # numerical primitives, checkpoint loading, attention, I/O
+  infra/                        # framework contracts: configs, pipelines, encoders/decoders, schedulers, runners
+  recipes/                      # built-in reusable recipe code (WAN, Cosmos, TAEHV, ...)
+  api_v2/                       # protocols an application implements
+  runtime_v2/                   # the two-thread loop that runs an application
+  runtime/                      # experimental inference runtime API envelope (v0, pre-v2)
+  serving/                      # optional serving utilities (WebRTC, network, launch)
+  demo/                         # transport-neutral application hosting and I/O API
+  accelerated/                  # accelerated kernels (quantization, multi-head attention)
+  quality/                      # output-quality regression utilities (video, CLIP compare)
+  configs/                      # runner registry and CLI aggregator
+  plugins/                      # external-runner plugin layer (RunnerConfig discovery)
+  scripts/                      # console-script entry points (flashdreams-run)
+  _pytest_plugins/              # pytest plugins (e.g. CI-tier marker enforcement)
 
-flashdreams/test_v2/           # Flashdreams Runtime/Protocol tests (window, run_session, threads)
-flashdreams/tests/             # framework tests not yet migrated to test_v2/
-tests/                         # repo-wide test-runner scripts + meta checks, not package tests
-docs/source/                   # Sphinx sources
+flashdreams/test_v2/            # FlashDreams Runtime/Protocol tests (window, run_session, threads)
+flashdreams/tests/              # framework tests not yet migrated to test_v2/
+tests/                          # repo-wide test-runner scripts + meta checks, not package tests
+docs/source/                    # Sphinx sources
 ```
+
+The `integrations_v2/<model>/` shape above is the layout for a model
+integration. The smaller demo and fixture packages (`color_fade`,
+`red_screen`, `null_model`, `imgui_ui_demo`, `slangpy_ui_demo`) carry a flat
+`<name>/` package instead; see
+[`integrations_v2/README.md`](https://github.com/NVIDIA/flashdreams/blob/main/integrations_v2/README.md) for what each one is.
 
 ## Coding conventions
 
@@ -265,7 +279,7 @@ docs/source/                   # Sphinx sources
 - Prefer small, well-named functions over long functions with comments
   explaining each block. Comments should explain *why*, not *what*.
 - Tests live next to the thing they validate — see the File Tree Of
-  Flashdreams above. Use `pytest` and prefer existing fixtures over
+  FlashDreams above. Use `pytest` and prefer existing fixtures over
   hand-rolled setup. See
   [Testing](#testing) for marker requirements.
 - Every source file added by a contribution must include the SPDX

@@ -3,9 +3,7 @@ members = [
     "flashdreams",
     # Each populated subdir under ``integrations_v2/`` is a standalone
     # external integration repo (e.g. ``causal_forcing`` / ``self_forcing``
-    # plugins, ``omnidreams`` / ``lingbot`` integrations); empty stub
-    # folders alongside them are intentional placeholders for future
-    # extractions and don't ship a ``pyproject.toml`` yet.
+    # plugins, ``omnidreams`` / ``lingbot`` integrations).
     "integrations_v2/*",
     "apps/*",
     # Nested sub-packages that the integration globs do not reach.
