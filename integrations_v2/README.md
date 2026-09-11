@@ -34,6 +34,8 @@ follows is already done for you.
   `cam2v-sana-wm-streaming` live-control binding.
 - `flashvsr` — streaming video super-resolution bound to the shared
   `apps/v2v` video-to-video application.
+- `swiftvr` — real-time streaming video restoration bound to the same
+  `apps/v2v` application.
 - `null_model` — not an application. A v1 pipeline the framework tests use as a
   fixture.
 

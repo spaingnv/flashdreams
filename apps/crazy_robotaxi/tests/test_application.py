@@ -104,10 +104,9 @@ _STUB_PIPELINE_CONFIG = StreamInferencePipelineConfig(
     encoder=_StubEncoderConfig(),
 )
 """A pipeline config with no model behind it, built from base flashdreams
-config classes only. CrazyRobotaxiApplication reads ``.name``, derives
-``.enable_sync_and_profile``, and logs several transformer/encoder fields
-unconditionally, so app-level tests need a real, structured pipeline config,
-not a real *model*."""
+config classes only. CrazyRobotaxiApplication reads ``.name`` and logs
+several transformer/encoder fields unconditionally, so app-level tests
+need a real, structured pipeline config, not a real *model*."""
 
 _STUB_DEFAULTS = CrazyRobotaxiApplicationDefaults(pipeline_config=_STUB_PIPELINE_CONFIG)
 
@@ -472,7 +471,7 @@ def test_leaderboard_does_not_finish_the_v2_model_loop() -> None:
         (["--profile-pipeline"], True),
     ],
 )
-def test_pipeline_profiling_is_an_app_local_opt_in(
+def test_diagnostics_flag_does_not_enable_pipeline_profiling(
     arguments: list[str],
     expected: bool,
 ) -> None:
@@ -487,7 +486,6 @@ def test_pipeline_profiling_is_an_app_local_opt_in(
 
     assert configured == []
     session._pipeline_factory()
-    assert configured[0].enable_sync_and_profile is expected
     assert app._config is not None
     assert app._config.pipeline_profiling is expected
 

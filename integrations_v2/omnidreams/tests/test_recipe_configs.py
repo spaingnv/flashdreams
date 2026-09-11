@@ -300,7 +300,6 @@ def test_crazy_robotaxi_fast_perf_honors_explicit_pipeline_overrides() -> None:
     assert transformer.native_dit_acceleration == "required"
     assert transformer.skip_finalize_kv_cache is True
     assert pipeline.diffusion_model.scheduler.denoising_timesteps == [1000, 100]
-    assert pipeline.enable_sync_and_profile is True
 
 
 def test_crazy_robotaxi_map_context_disables_only_native_dit_on_selected_preset() -> (

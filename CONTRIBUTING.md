@@ -404,6 +404,7 @@ Available integration packages:
 | `integrations_v2/lingbot` | `flashdreams-lingbot` |
 | `integrations_v2/omnidreams` | `flashdreams-omnidreams` |
 | `integrations_v2/self_forcing` | `flashdreams-self-forcing` |
+| `integrations_v2/swiftvr` | `flashdreams-swiftvr` |
 | `integrations_v2/wan21` | `flashdreams-wan21` |
 | `integrations_v2/wan22` | `flashdreams-wan22` |
 
